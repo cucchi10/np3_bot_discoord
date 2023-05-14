@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  bot:
+    container_name: np3_bot
+    build: 
+      context: .
+      dockerfile: ./deploy/Dockerfile
+    depends_on: 
+      - db
+    restart: always
+    env_file: 
+      - ./deploy/.env
+
+  db:
+    container_name: np3_db
+    image: postgres:11
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_EXTERNAL_PORT}:${DB_PORT}"
+    env_file: 
+      - ./deploy/.env

@@ -5,16 +5,8 @@ services:
     build: 
       context: .
       dockerfile: ./deploy/Dockerfile
-    depends_on: 
-      - db
     restart: always
-  db:
-    container_name: np3_db
-    image: postgres:11
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-    ports:
-      - "${DB_EXTERNAL_PORT}:${DB_PORT}"
+    env_file: 
+      - ./deploy/.env
+
+# docker-compose --project-directory . -f ../Docker-Services/DB/Postgres/docker-compose.yml up -d

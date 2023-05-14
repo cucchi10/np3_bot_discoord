@@ -7,12 +7,12 @@ FROM images
 const getImageByName = `
 SELECT * 
 FROM images
-WHERE name = $1
+WHERE nombre = $1
 `;
 
 const addImage = `
 INSERT INTO images
-(name,link)
+(nombre,link)
 VALUES ($1,$2)
 `;
 

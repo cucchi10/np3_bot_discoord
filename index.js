@@ -1,5 +1,7 @@
 require('dotenv').config({ path: 'deploy/.env' });
 
+const { getActionOfmessage, handleAction } = require('./src/service/actions');
+
 // Require the necessary discord.js classes
 const { Client, GatewayIntentBits } = require('discord.js');
 
@@ -19,16 +21,18 @@ client.once('ready', async () => {
 });
 
 
-
-client.on('messageCreate', message => {
-  if (message.content.includes('pene')) {
-    message.reply("QUERES PENE?")
+client.on('messageCreate', async message => {
+  try {
+    if (message.author.bot) return;
+    const action = getActionOfmessage(message.content);
+    if (!action) return;
+    await handleAction(message, action);
+  } catch (error) {
+    console.error(error);
+    return;
   }
 });
 
-client.on("messageReactionAdd", function (messageReaction, user) {
-  console.log(`a reaction is added to a message`);
-});
 
 // Login to Discord with your client's token
 client.login(process.env.BOT_TOKEN);
